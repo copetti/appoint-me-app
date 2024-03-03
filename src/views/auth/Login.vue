@@ -29,4 +29,11 @@
 <script setup>
     import Logo from '@/layouts/full/logo/Logo.vue';
     import LoginForm from '@/components/auth/LoginForm.vue';
+    import axios from 'axios';
+
+    axios.defaults.withCredentials = true;
+    axios.defaults.withXSRFToken = true;
+    axios.get('http://localhost/sanctum/csrf-cookie').then(()=>{
+        axios.post('http://localhost/api/login')
+    })
 </script>
