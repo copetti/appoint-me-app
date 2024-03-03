@@ -34,6 +34,9 @@
     axios.defaults.withCredentials = true;
     axios.defaults.withXSRFToken = true;
     axios.get('http://localhost/sanctum/csrf-cookie').then(()=>{
-        axios.post('http://localhost/api/login')
+        axios.post('http://localhost/api/login', {
+            'email':'test@example.com',
+            'password':'password',
+        })
     })
 </script>
