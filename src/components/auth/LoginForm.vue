@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useForm, useField } from "vee-validate";
 import { object, string } from 'yup';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from "@/store/auth";
 
 const schema = object({
     email : string().required().email().label('E-mail'),
@@ -10,7 +11,11 @@ const schema = object({
 });
 
 const { handleSubmit, errors, isSubmitting } = useForm({
-    validationSchema: schema
+    validationSchema: schema,
+    initialValues:{
+        email: 'test@example.com',
+        password: 'password'
+    }
 });
 
 const submit = handleSubmit(async (values) => {
@@ -21,28 +26,26 @@ const { value: email } = useField('email')
 const { value: password } = useField('password')
 
 const feedbackMessage = ref('');
-
+const authStore = useAuthStore();
 const router = useRouter();
 
-/* importing axios globally doesn't work */
-import axios from 'axios';
-
-axios.defaults.baseURL = import.meta.env.VITE_API_URL
-axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
+const loading = ref(false);
 
 function login(values){
     feedbackMessage.value = '';
-    axios.get('sanctum/csrf-cookie').then(()=>{
-        axios.post('api/login', {
-            'email':values.email,
-            'password':values.password,
-        }).then(()=>{
-          router.push({ name: 'dashboard' })
-        }).catch(()=>{
-            feedbackMessage.value = 'Your e-mail or password is invalid.'
-        })
-    })
+    loading.value = true;
+    authStore
+        .sanctum()
+        .then(()=>{
+            authStore
+                .login(values.email, values.password)
+                .then(()=>{
+                    router.push({ name: 'dashboard' })
+                }).catch(()=>{
+                    loading.value = false;
+                    feedbackMessage.value = 'Your e-mail or password is invalid.'
+                });
+    });
 }
 
 </script>
@@ -95,7 +98,7 @@ function login(values){
             {{isSubmitting}}
             <v-btn
                 type="submit"
-                :loading="isSubmitting"
+                :loading="loading"
                 color="primary"
                 size="large"
                 block
