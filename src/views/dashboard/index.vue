@@ -1,13 +1,13 @@
 <script setup>
 
-import { useAuthStore } from "@/store/auth";
+import { useMeStore } from "@/store/me";
 
-const authStore = useAuthStore();
+const meStore = useMeStore();
 
 
 </script>
 <template>
    <div>Dashboard</div>
-    {{authStore.user}}<br>
-    {{authStore.isLoggedIn}}
+    {{meStore.user}}<br>
+    {{meStore.isLoggedIn}}
 </template>

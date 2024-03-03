@@ -1,5 +1,7 @@
 // Utilities
 import { defineStore } from 'pinia'
+import { useMeStore } from "@/store/me";
+
 /* importing axios globally doesn't work */
 import axios from 'axios';
 
@@ -8,9 +10,7 @@ axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
 export const useAuthStore = defineStore('auth', {
-    state: () => ({
-        user: null,
-    }),
+    state: () => ({}),
     actions:{
         sanctum(){
             return axios.get('sanctum/csrf-cookie')
@@ -20,11 +20,10 @@ export const useAuthStore = defineStore('auth', {
                 email,
                 password,
             }).then((response) => {
-                this.user = response.data.data
+                const meStore = useMeStore();
+                meStore.user = response.data.data
             })
         }
     },
-    getters:{
-        isLoggedIn: (state) => !!state?.user?.id
-    },
+    getters:{},
 })
