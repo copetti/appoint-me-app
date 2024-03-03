@@ -35,16 +35,12 @@ function login(values){
     feedbackMessage.value = '';
     loading.value = true;
     authStore
-        .sanctum()
+        .login(values.email, values.password)
         .then(()=>{
-            authStore
-                .login(values.email, values.password)
-                .then(()=>{
-                    router.push({ name: 'dashboard' })
-                }).catch(()=>{
-                    loading.value = false;
-                    feedbackMessage.value = 'Your e-mail or password is invalid.'
-                });
+            router.push({ name: 'dashboard' })
+        }).catch(()=>{
+        loading.value = false;
+        feedbackMessage.value = 'Your e-mail or password is invalid.'
     });
 }
 
