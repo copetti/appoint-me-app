@@ -8,7 +8,7 @@
                             <div class="d-flex justify-center py-4">
                                 <Logo />
                             </div>
-                            <div class="text-body-1 text-muted text-center mb-3">Your Social Campaigns</div>
+                            <div class="text-body-1 text-muted text-center mb-3">Appoint Me</div>
                             <RegisterForm />
                             <h6 class="text-h6 text-muted font-weight-medium d-flex justify-center align-center mt-3">
                                 Already have an Account?

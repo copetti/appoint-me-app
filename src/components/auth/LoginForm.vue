@@ -91,7 +91,6 @@ function login(values){
             </div>
         </v-col>
         <v-col cols="12" class="pt-0">
-            {{isSubmitting}}
             <v-btn
                 type="submit"
                 :loading="loading"
